@@ -1,10 +1,7 @@
 require 'rack/camel_snake/formatter'
 
-module Rack
-  class CamelSnake
-    module Refinements
-      class Oj
-        def camelize(input)
+      module Oj
+        def self.camelize(input)
           to_camel = lambda do |key|
             key.is_a?(String) ? key.to_camel : key
           end
@@ -12,7 +9,7 @@ module Rack
           dump(Rack::CamelSnake::Formatter.formatter(load(input), to_camel))
         end
 
-        def snakify(input)
+        def self.snakify(input)
           to_snake = lambda do |key|
             key.is_a?(String) ? key.to_snake : key
           end
@@ -35,6 +32,4 @@ module Rack
           .downcase
         end
       end
-    end
-  end
-end
+    
