@@ -20,7 +20,7 @@ module Rack
     private
 
     def rewrite_request_body_to_snake(env)
-      if env['CONTENT_TYPE'] && env['CONTENT_TYPE'].includes?('application/json')
+      if env['CONTENT_TYPE'] && env['CONTENT_TYPE'] =~ 'application/json'
         input = env['rack.input'].read
         snakified = Oj.snakify(input)
         env['rack.input'] = StringIO.new(snakified)
