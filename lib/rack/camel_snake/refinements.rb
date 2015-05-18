@@ -3,8 +3,8 @@ require 'rack/camel_snake/formatter'
 module Rack
   class CamelSnake
     module Refinements
-      refine Oj.singleton_class do
-        def camelize(input)
+      class Oj 
+        def self.camelize(input)
           to_camel = lambda do |key|
             key.is_a?(String) ? key.to_camel : key
           end
@@ -12,7 +12,7 @@ module Rack
           dump(Rack::CamelSnake::Formatter.formatter(load(input), to_camel))
         end
 
-        def snakify(input)
+        def def.snakify(input)
           to_snake = lambda do |key|
             key.is_a?(String) ? key.to_snake : key
           end
@@ -21,7 +21,7 @@ module Rack
         end
       end
 
-      refine String do
+      class String
         def to_camel
           gsub(/_+([a-z])/){ |matched| matched.tr('_', '').upcase }
           .sub(/^(.)/){ |matched| matched.downcase }
