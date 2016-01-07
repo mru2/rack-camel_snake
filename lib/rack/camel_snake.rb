@@ -9,6 +9,8 @@ module Rack
     end
 
     def call(env)
+      return @app.call(env) if env['api.endpoint'] && env['api.endpoint'].options[:route_options][:keep_case]
+      
       rewrite_request_body_to_snake(env)
 
       response = @app.call(env)
