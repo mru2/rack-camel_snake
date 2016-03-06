@@ -30,15 +30,15 @@ module Rack
     end
 
     def rewrite_response_body_to_camel(response)
-      response_header = response[1]
-      response_body   = response[2]
+      response_header = response.header
+      response_body   = response.body
 
       if response_header['Content-Type'] =~ /application\/json/
         camelized_body = []
         response_body.each { |chunk| camelized_body << Oj.camelize(chunk) }
         response_header['Content-Length'] =
             camelized_body.reduce(0){ |s, i| s + i.bytesize }.to_s
-        response[2] = camelized_body
+        response.body = camelized_body
       end
 
       response
